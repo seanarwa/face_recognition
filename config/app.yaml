@@ -1,0 +1,83 @@
+name: FIRM
+version: 0.3.0-SNAPSHOT
+
+# Frames per second, default is 20
+fps: 20
+
+# System camera port number
+camera_port: 0
+
+image:
+  enabled: true
+  output_directory: data/
+  type: jpg  # Default is jpg
+  jpg:
+    # 0 - 100 (higher means better).
+    quality: 95  # Default is 95
+  png:
+    # 0 - 9 (higher means a smaller 
+    # size and longer compression time).
+    compression: 3  # Default is 3
+  ppm:
+    # 0 or 1, default is 1
+    binary_format_flag: 1
+  pgm:
+    # 0 or 1, default is 1
+    binary_format_flag: 1
+  pbm:
+    # 0 or 1, default is 1
+    binary_format_flag: 1
+
+logging:
+  enabled: true
+  level: INFO  # Log levels: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  file: log/app.log
+  timestamp: true  # Will attach timestamp after each log file if true
+
+matcher:
+
+  # Directory containing repository
+  directory: repo
+
+  # Tolerance between 0 and 1, it is stricter the lower it gets
+  # Default is 0.6
+  tolerance: 0.6
+
+  # Default is [dlib]
+  # [dlib] is better for face recognition
+  # [caffemodel, dlib] is better for facial image quality
+  # [caffemodel, haarcascade] is better for facial feature detection
+  extraction_layers:
+    - dlib
+  
+  haarcascade:
+    face_cascade_file: haarcascade/haarcascade_frontalface_default.xml
+    eyes_cascade_file: haarcascade/haarcascade_eye_tree_eyeglasses.xml
+    nose_cascade_file: haarcascade/haarcascade_mcs_nose.xml
+    mouth_cascade_file: haarcascade/haarcascade_mcs_mouth.xml
+  
+  caffemodel:
+
+    # Minimum confidence probability to qualify a face
+    confidence_threshold: 0.90
+
+    prototxt_file: caffemodel/deploy.prototxt.txt
+    caffemodel_file: caffemodel/res10_300x300_ssd_iter_140000.caffemodel
+    
+  dlib:
+
+    # model can be hog or cnn
+    # hog uses CPU, cnn uses GPU
+    # Default is hog
+    model: hog
+
+    # number of times to upsample face locations
+    # higher numbers find smaller faces
+    # Default is 1
+    upsamples: 3
+
+    # resizing frame to perform face recognition,
+    # output image will still be original quality
+    frame_resize:
+      enabled: true
+      scale: 1
